@@ -1,0 +1,120 @@
+---
+config:
+  agent: Firefox
+do:
+- walk:
+    to: 'http://www.asos.com/'
+    do:
+    - find:
+        path: .hgroup .buttons
+        do:
+        - find:
+            path: .lside, .rside
+            do:
+            - parse:
+                attr: href
+            - find:
+                path: span
+                do:
+                - parse
+                - variable_clear: gender
+                - variable_set: gender
+                - walk:
+                    to: value
+                    do:
+                    - find:
+                        path: .categories-image-v1
+                        do:
+                        - find:
+                            path: '.swiper-wrapper > .swiper-slide'
+                            do:
+                            - find:
+                                path: a
+                                do:
+                                - pool_clear: cats
+                                - parse:
+                                    attr: href
+                                - link_add:
+                                    pool: cats
+                                - find:
+                                    path: h4
+                                    do:
+                                    - parse
+                                    - variable_clear: cat
+                                    - variable_set: cat
+                                    - walk:
+                                        to: links
+                                        pool: cats
+                                        do: 
+                                        - find:
+                                            path: .results.three-grid .interactions
+                                            do:
+                                            - object_new: item
+                                            - variable_get: gender
+                                            - object_field_set:
+                                                object: item
+                                                field: gender_name
+                                            - variable_get: cat
+                                            - object_field_set:
+                                                object: item
+                                                field: gender_cat
+                                            - find:
+                                                path: .name
+                                                do:
+                                                - parse
+                                                - object_field_set:
+                                                    object: item
+                                                    field: product_name
+                                            - find:
+                                                path: .price-wrap.price-current .price
+                                                do:
+                                                - parse
+                                                - object_field_set:
+                                                    object: item
+                                                    field: product_price
+                                            - find:
+                                                path: .product-img
+                                                do:
+                                                - parse:
+                                                    attr: src
+                                                - object_field_set:
+                                                    object: item
+                                                    field: porduct_img
+                                            - find:
+                                                path: .product.product-link
+                                                do:
+                                                - parse:
+                                                    attr: href
+                                                - walk:
+                                                    to: value
+                                                    do:
+                                                    - find:
+                                                        path: .size-and-fit p
+                                                        do:
+                                                        - parse
+                                                        - object_field_set:
+                                                            object: item
+                                                            field: product_size_and_fit
+                                                    - find:
+                                                        path: .product-description
+                                                        do:
+                                                        - parse
+                                                        - object_field_set:
+                                                            object: item
+                                                            field: product_description
+                                                    - find:
+                                                        path: .about-me div
+                                                        do:
+                                                        - parse
+                                                        - object_field_set:
+                                                            object: item
+                                                            field: product_structure
+                                            - object_save:
+                                                name: item
+                                        - find:
+                                            path: .pager .next a
+                                            do:
+                                            - parse:
+                                                attr: href
+                                            - link_add:
+                                                pool: cats
