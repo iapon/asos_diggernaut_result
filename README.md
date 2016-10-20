@@ -8,4 +8,6 @@ Result in digger_1047_data.json
 
 Image with timing is sample-asos.PNG
 
+asos.PNG is our visual tool.
+
 Config is digger_config.yaml
