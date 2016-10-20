@@ -1,6 +1,6 @@
 # Test repo.
 
-Just for https://blog.parsehub.com/portia-vs-parsehub-comparison-which-alternative-is-the-best-option-for-web-scraping/ comparasion.
+Just for https://blog.parsehub.com/portia-vs-parsehub-comparison-which-alternative-is-the-best-option-for-web-scraping/ comparison.
 
 This code and supplemented data files presented for educational purposes only.
 
